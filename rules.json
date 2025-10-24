@@ -1,0 +1,36 @@
+{
+  "gejala": [
+    { "kode": "G1", "nama": "Demam" },
+    { "kode": "G2", "nama": "Mengigil" },
+    { "kode": "G3", "nama": "Berkeringat" },
+    { "kode": "G4", "nama": "Sakit Kepala" },
+    { "kode": "G5", "nama": "Pingsan" },
+    { "kode": "G6", "nama": "Anemia" },
+    { "kode": "G7", "nama": "Denyut Nadi Melambat" },
+    { "kode": "G8", "nama": "Muncul Bintik Merah" },
+    { "kode": "G9", "nama": "Badan Lesu" },
+    { "kode": "G10", "nama": "Muka Merah" },
+    { "kode": "G11", "nama": "Muntah-muntah" },
+    { "kode": "G12", "nama": "Diare" },
+    { "kode": "G13", "nama": "Pegal-Pegal" },
+    { "kode": "G14", "nama": "Kejang-Kejang" },
+    { "kode": "G15", "nama": "Dehidrasi" },
+    { "kode": "G16", "nama": "Sesak Na,fas" },
+    { "kode": "G17", "nama": "Mual" },
+    { "kode": "G18", "nama": "Gagal Ginjal" },
+    { "kode": "G19", "nama": "Nyeri otot" },
+    { "kode": "G20", "nama": "Kurang Nafsu makan" }
+
+  ],
+  "aturan": [
+    { "id": "R1", "if": ["G1", "G2", "G3", "G10", "G13", "G20"], "then": "Malaria Tertiana", "cf": 0.3 },
+    { "id": "R2", "if": ["G1", "G2", "G3"], "then": "Malaria Tertiana", "cf": 0.7 },
+    { "id": "R3", "if": ["G1", "G2", "G5", "G6", "G7", "G11", "G12", "G13", "G14", "G15", "G17", "G18", "G20"], "then": "Malaria Tropika", "cf": 0.3},
+    { "id": "R4", "if": ["G1", "G2", "G4", "G5", "G9", "G13", "G14", "G16", "G19", "G20"], "then": "Malaria Quartana", "cf": 0.3 },
+    { "id": "R5", "if": ["G1", "G6", "G7", "G11", "G14", "G17"], "then": "Malaria Tropika", "cf": 0.8},
+    { "id": "R6", "if": ["G1", "G3", "G5", "G6", "G8", "G13", "G16", "G20"], "then": "Malaria Ovale", "cf": 0.4},
+    { "id": "R7", "if": ["G2", "G3", "G7", "G10", "G11", "G17", "G18", "G20"], "then": "Malaria Tropika", "cf": 0.6 },
+    { "id": "R8", "if": ["G1", "G5", "G8", "G10", "G13", "G16", "G17"], "then": "Malaria Ovale", "cf":0.9 },
+    { "id": "R9", "if": ["G1", "G4", "G9", "G14"], "then": "Malaria Quartana", "cf": 0.7 }
+  ]
+}
