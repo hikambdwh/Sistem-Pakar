@@ -107,17 +107,7 @@ function displayResults(results) {
 
   container.style.display = "block";
 
-  // Animasi progress bar
-  setTimeout(() => {
-    const progressFills = document.querySelectorAll(".progress-fill");
-    progressFills.forEach((fill) => {
-      const width = fill.style.width;
-      fill.style.width = "0%";
-      setTimeout(() => {
-        fill.style.width = width;
-      }, 100);
-    });
-  }, 100);
+
 }
 
 // Event listener untuk tombol diagnosa
