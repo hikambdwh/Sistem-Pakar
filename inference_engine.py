@@ -12,7 +12,12 @@ aturan = knowledge["aturan"]
 
 @app.route("/")
 def home():
-    return render_template("ui.html", gejala=gejala)
+    return render_template("ui.html")
+
+# Endpoint baru untuk mengambil data gejala
+@app.route("/api/gejala", methods=["GET"])
+def get_gejala():
+    return jsonify({"gejala": gejala})
 
 @app.route("/infer", methods=["POST"])
 def infer():

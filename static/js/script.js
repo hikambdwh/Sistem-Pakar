@@ -1,26 +1,5 @@
-// Data gejala dari rules.json
-const gejala = [
-  { kode: "G1", nama: "Demam" },
-  { kode: "G2", nama: "Mengigil" },
-  { kode: "G3", nama: "Berkeringat" },
-  { kode: "G4", nama: "Sakit Kepala" },
-  { kode: "G5", nama: "Pingsan" },
-  { kode: "G6", nama: "Anemia" },
-  { kode: "G7", nama: "Denyut Nadi Melambat" },
-  { kode: "G8", nama: "Muncul Bintik Merah" },
-  { kode: "G9", nama: "Badan Lesu" },
-  { kode: "G10", nama: "Muka Merah" },
-  { kode: "G11", nama: "Muntah-muntah" },
-  { kode: "G12", nama: "Diare" },
-  { kode: "G13", nama: "Pegal-Pegal" },
-  { kode: "G14", nama: "Kejang-Kejang" },
-  { kode: "G15", nama: "Dehidrasi" },
-  { kode: "G16", nama: "Sesak Nafas" },
-  { kode: "G17", nama: "Mual" },
-  { kode: "G18", nama: "Gagal Ginjal" },
-  { kode: "G19", nama: "Nyeri otot" },
-  { kode: "G20", nama: "Kurang Nafsu makan" },
-];
+// Data gejala akan diambil dari backend
+let gejala = [];
 
 // Opsi CF yang tersedia
 const cfOptions = [
@@ -31,9 +10,26 @@ const cfOptions = [
   { value: 0.0, label: "Sangat Tidak Yakin" },
 ];
 
+// Fungsi untuk mengambil data gejala dari backend
+async function loadGejala() {
+  try {
+    const response = await fetch("/api/gejala");
+    if (!response.ok) {
+      throw new Error("Gagal mengambil data gejala");
+    }
+    const data = await response.json();
+    gejala = data.gejala;
+    initSymptoms();
+  } catch (error) {
+    console.error("Error loading gejala:", error);
+    alert("Gagal memuat data gejala. Pastikan backend berjalan dengan baik.");
+  }
+}
+
 // Fungsi untuk menginisialisasi gejala di UI
 function initSymptoms() {
   const container = document.getElementById("symptoms-container");
+  container.innerHTML = ""; // Kosongkan container
 
   gejala.forEach((symptom) => {
     const symptomItem = document.createElement("div");
@@ -46,17 +42,17 @@ function initSymptoms() {
     });
 
     symptomItem.innerHTML = `
-            <div class="symptom-header">
-                <span class="symptom-name">${symptom.nama}</span>
-                <span class="symptom-code">${symptom.kode}</span>
-            </div>
-            <div class="cf-select-container">
-                <select class="cf-select" data-kode="${symptom.kode}">
-                    <option value="">Pilih tingkat keyakinan</option>
-                    ${optionsHTML}
-                </select>
-            </div>
-        `;
+      <div class="symptom-header">
+        <span class="symptom-name">${symptom.nama}</span>
+        <span class="symptom-code">${symptom.kode}</span>
+      </div>
+      <div class="cf-select-container">
+        <select class="cf-select" data-kode="${symptom.kode}">
+          <option value="">Pilih tingkat keyakinan</option>
+          ${optionsHTML}
+        </select>
+      </div>
+    `;
     container.appendChild(symptomItem);
   });
 }
@@ -96,18 +92,16 @@ function displayResults(results) {
     const resultItem = document.createElement("div");
     resultItem.className = "result-item";
     resultItem.innerHTML = `
-            <div class="result-disease">${result.penyakit}</div>
-            <div class="result-cf">${result.cf}%</div>
-            <div class="progress-bar">
-                <div class="progress-fill" style="width: ${result.cf}%"></div>
-            </div>
-        `;
+      <div class="result-disease">${result.penyakit}</div>
+      <div class="result-cf">${result.cf}%</div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: ${result.cf}%"></div>
+      </div>
+    `;
     list.appendChild(resultItem);
   });
 
   container.style.display = "block";
-
-
 }
 
 // Event listener untuk tombol diagnosa
@@ -145,15 +139,6 @@ document
       alert(
         "Terjadi kesalahan saat menghubungi server. Pastikan backend berjalan dengan baik."
       );
-
-      // Tampilkan hasil simulasi jika backend tidak tersedia
-      const simulatedResults = [
-        { penyakit: "Malaria Tropika", cf: 85.5 },
-        { penyakit: "Malaria Tertiana", cf: 72.3 },
-        { penyakit: "Malaria Ovale", cf: 45.8 },
-        { penyakit: "Malaria Quartana", cf: 32.1 },
-      ];
-      displayResults(simulatedResults);
     } finally {
       // Sembunyikan loading
       loading.style.display = "none";
@@ -175,5 +160,5 @@ document.getElementById("reset-btn").addEventListener("click", function () {
 
 // Inisialisasi UI saat halaman dimuat
 document.addEventListener("DOMContentLoaded", function () {
-  initSymptoms();
+  loadGejala(); // Ambil data gejala dari backend
 });
