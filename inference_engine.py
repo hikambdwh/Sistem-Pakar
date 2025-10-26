@@ -12,7 +12,7 @@ aturan = knowledge["aturan"]
 
 @app.route("/")
 def home():
-    return render_template("index.html", gejala=gejala)
+    return render_template("ui.html", gejala=gejala)
 
 @app.route("/infer", methods=["POST"])
 def infer():
